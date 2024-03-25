@@ -266,28 +266,26 @@ Run this:
 Wait for the stack status to change to  CREATE_COMPLETE. **Note:** This stack can take up to 5 minutes to deploy the resources.
 
 ### Task 7: Create the application servers by configuring an Auto Scaling group and a scaling policy
-In this task, you create the WordPress application servers by configuring an Auto Scaling group and a scaling policy. 
-
-At the top of the page, in the unified search bar, search for and choose EC2. In the left navigation pane, under the Auto Scaling section, choose Auto Scaling Groups.
+In this task, you create the WordPress application servers by configuring an Auto Scaling group and a scaling policy.  At the top of the page, in the unified search bar, search for and choose EC2. In the left navigation pane, under the Auto Scaling section, choose Auto Scaling Groups.
 
 * Choose Create Auto Scaling group
 
 * On the Choose launch template or configuration page:
-   * In the Name section, for Auto Scaling group name, enter WP-ASG.
+   * In the Name section, for Auto Scaling group name, enter **WP-ASG**
    * In the Launch template section, for Launch Template, select LabLaunchTemplate.
 
 * Choose Next
 
 * On the Choose instance launch options page, in the Network section:
    * For VPC, select LabVPC.
-   * For Availability Zones and subnets, choose AppSubnet1 and AppSubnet2.
+   * For Availability Zones and subnets, choose **AppSubnet1** and **AppSubnet2**
 
 * Choose Next
 
 * On the Configure advanced options page, configure the following:
    * For Load balancing, select Attach to an existing load balancer.
    * For Attach to an existing load balancer, select Choose from your load balancer target groups.
-   * For Existing load balancer target groups, select myWPTargetGroup | HTTP.
+   * For Existing load balancer target groups, select **myWPTargetGroup | HTTP**
    * For Health checks, select Turn on Elastic Load Balancing health checks.
    * For Health check grace period, leave at the default value of 300 or more.
    * For Monitoring, select Enable group metrics collection within CloudWatch.
@@ -299,13 +297,14 @@ At the top of the page, in the unified search bar, search for and choose EC2. In
    * In the Scaling section:
    * For Minimum capacity, enter 2
    * For Maximum capacity, enter 4
-   * In the Automatic scaling - optional section, select the Target tracking scaling policy option.
-   * The remaining settings on this section can be left at their default values.
+
+* In the Automatic scaling - optional section, select the **Target tracking scaling policy option**. The remaining settings on this section can be left at their default values.
 
 * Choose Next
 
-* In the Add notifications page, choose Next .
-   * In the Add tags page, choose Add tag and in the Tags (1) section:
+* In the Add notifications page, choose Next
+
+* In the Add tags page, choose Add tag and in the Tags (1) section:
    * For Key, enter **Name**
    * For Value, enter **wp-ha-app**
 
