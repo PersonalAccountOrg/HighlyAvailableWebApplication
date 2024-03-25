@@ -163,15 +163,19 @@ In this task, you provision a shared storage layer using Amazon EFS that creates
 At the top of the page, in the unified search bar, search for and choose EFS. The Amazon Elastic File System page is displayed.
 
 * Choose Create file system .
+
 * On the Create file system page, choose Customize
+
 * On the File system settings page, in the General section:
    * For Name, enter **myWPEFS**
    * Deselect Enable automatic backups.
+
 * In the Tags - optional section:
    * For Tag key, enter **Name**
    * For Tag value – optional, enter **myWPEFS**
    * Leave all other settings at their default value.
    * Choose Next
+
 * On the Network access page:
    * For Virtual Private Cloud (VPC), select LabVPC.
    * For Availability Zone, select the Availability Zone ending in “a”.
@@ -182,130 +186,76 @@ At the top of the page, in the unified search bar, search for and choose EFS. Th
    * For Security group, select **xxxxx-EFSMountTargetSecurityGroup-xxxxx.**
    * Choose Next
 
-On the File system policy – optional page, choose Next .
+* On the File system policy – optional page, choose Next .
 
- Note: Configuring this page is not necessary in this lab.
+* On the Review and create page, scroll to the bottom of the page and choose Create .
 
-On the Review and create page, scroll to the bottom of the page and choose Create .
- Expected service output:
-
- Success! File system (fs-xxxxxxx) is available
-
-
- Note: The file system state displays as Available after several minutes.
-
-Copy the File system ID generated for myWPEFS to a text editor. It has a format like fs-a1234567.
- Congratulations! You have successfully created the Amazon EFS that created the NFS cluster across multiple availability zones.
+Copy the *File system ID* generated for myWPEFS to a text editor. It has a format like fs-a1234567.
 
 ### Task 5: Create an Application Load Balancer
-In this task, you create the Application Load Balancer and a target group.
+In this task, you create the Application Load Balancer and a target group. At the top of the page, in the unified search bar, search for and choose EC2.
 
-#### TASK 5.1: NAVIGATE TO THE AMAZON EC2 CONSOLE
-At the top of the page, in the unified search bar, search for and choose EC2.
-The EC2 Dashboard page is displayed.
+* In the left navigation pane, choose Target Groups.
+* Choose Create target group
+* On the Specify group details page, in the Basic configuration section:
+   * For Choose a target type, select Instances.
+   * For Target group name, enter **myWPTargetGroup**
+   * For VPC, select LabVPC.
+* On the Specify group details page, in the Health checks section:
+   * For Health check path, enter **/wp-login.php**
 
-#### TASK 5.2: CREATE A TARGET GROUP
-In the left navigation pane, choose Target Groups.
+* Expand the  Advanced health check settings section and configure the following:
+   * For Healthy threshold, enter 2.
+   * For Unhealthy threshold, enter 10.
+   * For Timeout, enter 50.
+   * For Interval, enter 60.
 
-Choose Create target group .
+* Leave the remaining settings on the page at their default values. Choose Next
 
-On the Specify group details page, in the Basic configuration section:
+* On the Register targets page, scroll to the bottom of the page and choose Create target group .
 
-For Choose a target type, select Instances.
-For Target group name, enter myWPTargetGroup
-For VPC, select LabVPC.
-On the Specify group details page, in the Health checks section:
-For Health check path, enter /wp-login.php
+#### TASK 5.1: CREATE AN APPLICATION LOAD BALANCER
+In the left navigation pane, choose Load Balancers. Choose Create load balancer. 
 
-Expand the  Advanced health check settings section and configure the following:
+* In the Application Load Balancer section, choose Create
+* For Load balancer name, enter **myWPAppALB**
 
-For Healthy threshold, enter 2.
-For Unhealthy threshold, enter 10.
-For Timeout, enter 50.
-For Interval, enter 60.
-Leave the remaining settings on the page at their default values.
-
-Choose Next .
-
-On the Register targets page, scroll to the bottom of the page and choose Create target group .
-
- Note: There are no targets to register currently.
-
- Expected service output:
-
- Successfully created target group: myWPTargetGroup
-
-
-#### TASK 5.3: CREATE AN APPLICATION LOAD BALANCER
-In the left navigation pane, choose Load Balancers.
-
-Choose Create load balancer .
-
-In the Application Load Balancer section, choose Create .
-
-On the Create Application Load Balancer page, in the Basic Configuration section:
-
-For Load balancer name, enter myWPAppALB.
-On the Create Application Load Balancer page, in the Network mapping section:
-For VPC, choose LabVPC.
+* On the Create Application Load Balancer page, in the Network mapping section:
+   * For VPC, choose LabVPC.
 
 For Mappings:
+   * Select the first Availability Zone listed, and choose **PublicSubnet1** from the Subnet dropdown menu.
+   * Select the second Availability Zone listed, and choose **PublicSubnet2** from the Subnet dropdown menu.
 
-Select the first Availability Zone listed, and choose PublicSubnet1 from the Subnet dropdown menu.
-Select the second Availability Zone listed, and choose PublicSubnet2 from the Subnet dropdown menu.
-On the Create Application Load Balancer page:
-In the Security groups section:
+* In the Security groups section:
+   * From the Security groups dropdown menu, choose **xxxxx-AppInstanceSecurityGroup-xxxxx**
+   * To remove the default security group, choose the X.
 
-From the Security groups dropdown menu, choose xxxxx-AppInstanceSecurityGroup-xxxxx.
-To remove the default security group, choose the X.
-In the Listeners and routing section:
+* In the Listeners and routing section:
+   * For Listener HTTP:80, choose myWPTargetGroup for the Default action.
 
-For Listener HTTP:80, choose myWPTargetGroup for the Default action.
-Scroll to the bottom of the page and choose Create load balancer .
- Expected service output:
-
- Successfully created load balancer:myWPAppALB
-
-
-Choose View load balancer .
- Note: The load balancer is in the Provisioning state for few minutes and then changes to Active. Wait for the load balancer State to change to Active.
+* Scroll to the bottom of the page and choose **Create load balancer**
 
 Copy the DNS name to a text editor.
- WARNING: Verify that all the resources from previous tasks are created successfully before continuing to the next task.
 
- Congratulations! You have created the target group and a public facing load balancer.
+**WARNING:** Verify that all the resources from previous tasks are created successfully before continuing to the next task. Wait for the load balancer State to change to Active.
 
 ### Task 6: Create a launch template using CloudFormation
-In this task, you use a CloudFormation template to deploy the WordPress user data within an Amazon Elastic Compute Cloud (Amazon EC2) Auto Scaling launch template. The template includes the EFS mount points and the Aurora configurations.
 
-#### TASK 6.1: NAVIGATE TO THE CLOUDFORMATION CONSOLE
-At the top of the page, in the unified search bar, search for and choose CloudFormation.
-The CloudFormation page is displayed.
+In this task, you use SAM to deploy the WordPress user data within an Amazon Elastic Compute Cloud (Amazon EC2) Auto Scaling launch template. The template includes the EFS mount points and the Aurora configurations.
 
-#### TASK 6.2: CREATE THE CLOUDFORMATION STACK
-Choose Create stack .
- Note: If the console starts you on the Stacks page instead of the Amazon CloudFormation landing page, then you can get to the Create stack page in two steps.
+Run this:
 
-Choose Create stack  .
+`sam build -t 02-WPLaunchConfigStack.yaml`
 
-Choose With new resources (standard) .
+`sam deploy -g -t 02-WPLaunchConfigStack.yaml`
 
-On the Create Stack page:
-Select Template is ready.
-Select Amazon S3 URL.
-Copy the Task6TemplateUrl value from the left side of these lab instructions and paste it in the Amazon S3 URL text box.
-Choose Next .
-On the Specify stack details page:
-In the Provide a stack name section, for Stack name, enter WPLaunchConfigStack.
-
-In the Parameters section, for DB Name, paste the initial database name you copied in Task 2.
-
- Note: Make sure that you paste the initial database name, not the cluster name.
-
-* For Database endpoint, paste the writer endpoint you copied in Task 2.
+* For stack name enter **WPLaunchConfigStack**
+* In the Parameters section, for DB Name, paste the initial database name you copied in Task 2. **Note:** Make sure that you paste the initial database name, not the cluster name.
+* For Database Host Name, paste the writer endpoint you copied in Task 2.
 * For Database User Name, paste the Master username you copied in Task 2.
 * For Database Password, paste the LabPassword value from the left side of these lab instructions.
-* For WordPress admin username, defaults to wpadmin.
+* For WordPress admin username, defaults to **wpadmin**
 * For WordPress admin password, paste the LabPassword value from the left side of these lab instructions.
 * For WordPress admin email address, input a valid email address.
 * For Instance Type, leave the default value of t3.medium.
@@ -313,145 +263,73 @@ In the Parameters section, for DB Name, paste the initial database name you copi
 * For LatestAL2AmiId, leave the default value.
 * For WPElasticFileSystemID, paste the File system ID value you copied in Task 4.
 
-Choose Next .
-
-On the Configure stack options page, choose Next .
-
- Note: You can use this page to specify additional parameters. You can browse the page, but leave settings at their default values.
-
-On the Review page, scroll to the bottom of the page and choose Submit .
- Note: The Review page is a summary of all settings.
-
-The stack details page is displayed.
-
- While the stack is being created, it’s listed on the Stacks page with a status of CREATE_IN_PROGRESS.
-
-Choose the Stack info tab.
-
-Occasionally choose the console refresh  .
-
-Wait for the stack status to change to  CREATE_COMPLETE .
-
- Note: This stack can take up to 5 minutes to deploy the resources.
-
-#### TASK 6.3: VIEW CREATED RESOURCES FROM THE CONSOLE
-Choose the Resources tab.
-The list shows the resources that are created.
-
- Congratulations! You have created the Launch template which is used to launch WordPress servers.
+Wait for the stack status to change to  CREATE_COMPLETE. **Note:** This stack can take up to 5 minutes to deploy the resources.
 
 ### Task 7: Create the application servers by configuring an Auto Scaling group and a scaling policy
-In this task, you create the WordPress application servers by configuring an Auto Scaling group and a scaling policy.
+In this task, you create the WordPress application servers by configuring an Auto Scaling group and a scaling policy. 
 
-#### TASK 7.1: CREATING AN AUTO SCALING GROUP
-At the top of the page, in the unified search bar, search for and choose EC2.
-The EC2 Dashboard page is displayed.
+At the top of the page, in the unified search bar, search for and choose EC2. In the left navigation pane, under the Auto Scaling section, choose Auto Scaling Groups.
 
-In the left navigation pane, under the Auto Scaling section, choose Auto Scaling Groups.
+* Choose Create Auto Scaling group
 
-Choose Create Auto Scaling group .
+* On the Choose launch template or configuration page:
+   * In the Name section, for Auto Scaling group name, enter WP-ASG.
+   * In the Launch template section, for Launch Template, select LabLaunchTemplate.
 
-On the Choose launch template or configuration page:
+* Choose Next
 
-In the Name section, for Auto Scaling group name, enter WP-ASG.
+* On the Choose instance launch options page, in the Network section:
+   * For VPC, select LabVPC.
+   * For Availability Zones and subnets, choose AppSubnet1 and AppSubnet2.
 
-In the Launch template section, for Launch Template, select LabLaunchTemplate.
+* Choose Next
 
-Choose Next .
+* On the Configure advanced options page, configure the following:
+   * For Load balancing, select Attach to an existing load balancer.
+   * For Attach to an existing load balancer, select Choose from your load balancer target groups.
+   * For Existing load balancer target groups, select myWPTargetGroup | HTTP.
+   * For Health checks, select Turn on Elastic Load Balancing health checks.
+   * For Health check grace period, leave at the default value of 300 or more.
+   * For Monitoring, select Enable group metrics collection within CloudWatch.
 
-On the Choose instance launch options page, in the Network section:
+* Choose Next
 
-For VPC, select LabVPC.
-For Availability Zones and subnets, choose AppSubnet1 and AppSubnet2.
-Choose Next .
+* On the Configure group size and scaling - optional page:
+   * In the Group Size section, for Desired capacity, enter 2.
+   * In the Scaling section:
+   * For Minimum capacity, enter 2
+   * For Maximum capacity, enter 4
+   * In the Automatic scaling - optional section, select the Target tracking scaling policy option.
+   * The remaining settings on this section can be left at their default values.
 
-On the Configure advanced options page, configure the following:
+* Choose Next
 
-For Load balancing, select Attach to an existing load balancer.
-For Attach to an existing load balancer, select Choose from your load balancer target groups.
-For Existing load balancer target groups, select myWPTargetGroup | HTTP.
-For Health checks, select Turn on Elastic Load Balancing health checks.
-For Health check grace period, leave at the default value of 300 or more.
-For Monitoring, select Enable group metrics collection within CloudWatch.
-Choose Next .
+* In the Add notifications page, choose Next .
+   * In the Add tags page, choose Add tag and in the Tags (1) section:
+   * For Key, enter **Name**
+   * For Value, enter **wp-ha-app**
 
-On the Configure group size and scaling - optional page:
+* Choose Next
 
-In the Group Size section, for Desired capacity, enter 2.
+* On the Review page, review the Auto Scaling group configuration for accuracy, and then at the bottom of the page, choose Create Auto Scaling group .
 
-In the Scaling section:
+Now that you have created your Auto Scaling group, you can verify that the group has launched your EC2 instances. Choose the Auto Scaling group WP-ASG link. To review information about the Auto Scaling group, examine the Group Details section.
 
-For Minimum capacity, enter 2
-For Maximum capacity, enter 4
-In the Automatic scaling - optional section, select the Target tracking scaling policy option.
+Choose the Activity tab. The Activity History section maintains a record of events that have occurred in your Auto Scaling group. The Status column contains the current status of your instances. When your instances are launching, the status column shows PreInService. The status changes to Successful once an instance is launched.
 
-The remaining settings on this section can be left at their default values.
+Choose the Instance management tab. Your Auto Scaling group has launched two Amazon EC2 instances and they are in the InService lifecycle state. The Health Status column shows the result of the Amazon EC2 instance health check on your instances. If your instances have not reached the InService state yet, you need to wait a few minutes. You can choose the refresh button to retrieve the current lifecycle state of your instances.
 
-Choose Next .
+Choose the Monitoring tab. Here, you can review monitoring-related information for your Auto Scaling group. This page provides information about activity in your Auto scaling group, as well as the usage and health status of your instances. The Auto Scaling tab displays Amazon CloudWatch metrics about your Auto Scaling group, while the EC2 tab displays metrics for the Amazon EC2 instances managed by the Auto Scaling group.
 
-In the Add notifications page, choose Next .
+In the left navigation pane, choose Load Balancers. Copy the DNS name to a text editor and append the value /wp-login.php to the end of the DNS name to complete your WordPress application URL.
 
-In the Add tags page, choose Add tag and in the Tags (1) section:
+* Paste the WordPress application URL value into a new browser tab. The WordPress login page is displayed.
+* On the WordPress login page:
+   * For Username or Email Address, enter wpadmin.
+   * For Password, paste the LabPassword value from the left side of these lab instructions.
+   * Choose the Log in button. The WordPress management website is displayed.
 
-For Key, enter Name.
-For Value, enter wp-ha-app.
-Choose Next .
-
-On the Review page, review the Auto Scaling group configuration for accuracy, and then at the bottom of the page, choose Create Auto Scaling group .
-
- Expected service output:
-
- WP-ASG, 1 Scaling policy created successfully. Group metrics collection is enabled.
-
-
-Now that you have created your Auto Scaling group, you can verify that the group has launched your EC2 instances.
-
-Choose the Auto Scaling group WP-ASG link.
-
-To review information about the Auto Scaling group, examine the Group Details section.
-
-Choose the Activity tab.
-
-The Activity History section maintains a record of events that have occurred in your Auto Scaling group. The Status column contains the current status of your instances. When your instances are launching, the status column shows PreInService. The status changes to Successful once an instance is launched.
-
-Choose the Instance management tab.
-Your Auto Scaling group has launched two Amazon EC2 instances and they are in the InService lifecycle state. The Health Status column shows the result of the Amazon EC2 instance health check on your instances.
-
-If your instances have not reached the InService state yet, you need to wait a few minutes. You can choose the refresh button to retrieve the current lifecycle state of your instances.
-
-Choose the Monitoring tab. Here, you can review monitoring-related information for your Auto Scaling group.
-This page provides information about activity in your Auto scaling group, as well as the usage and health status of your instances. The Auto Scaling tab displays Amazon CloudWatch metrics about your Auto Scaling group, while the EC2 tab displays metrics for the Amazon EC2 instances managed by the Auto Scaling group.
-
-#### TASK 7.2: VERIFY THE TARGET GROUPS ARE HEALTHY
-In the left navigation pane, choose Target Groups.
-
-Choose the myWPTargetGroup link.
-
-In the Targets tab, wait until the instance Health status is displayed as healthy.
-
- Note: It can take up to 5 minutes for the health checks to show as healthy.
-
-#### TASK 7.3: LOGIN TO THE APPLICATION
-In the left navigation pane, choose Load Balancers.
-
-Copy the DNS name to a text editor and append the value /wp-login.php to the end of the DNS name to complete your WordPress application URL.
-
- Expected output:
-
-myWPAppELB-4e009e86b4f704cc.elb.us-west-2.amazonaws.com/wp-login.php
-
-Paste the WordPress application URL value into a new browser tab.
-The WordPress login page is displayed.
-
-On the WordPress login page:
-For Username or Email Address, enter wpadmin.
-For Password, paste the LabPassword value from the left side of these lab instructions.
-Choose the Log in button.
-The WordPress management website is displayed.
-
- Note: Keep the browser tab open, you will return to it in later task.
-
- Congratulations! You have now created a highly-available auto-scaling deployment of WordPress application that scales in and out.
+ **Note:** Keep the browser tab open, you will return to it in later task.
 
 ### Task 8: Chaos testing with AWS Fault Injection Simulator
 In this task, you test the application high availability using chaos engineering. You randomly terminate EC2 instances and see if the auto scaling group and load balancer can reroute the traffic to healthy hosts and start new EC2 instances to keep the required capacity.
