@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
 
 Description: Lab Task 1 template which builds VPC, supporting resources, a basic networking structure, and some Security groups for use in later tasks.
 

@@ -22,181 +22,129 @@ After completing this lab, you should be able to do the following:
 * Use Amazon Elastic File System (Amazon EFS) to provision a shared storage layer across multiple Availability Zones for the application tier, powered by Network File System (NFS).
 * Create a group of web servers that automatically scales in response to load variations to complete the application tier.
 
-### TASK 1.1: NAVIGATE TO THE CLOUDFORMATION CONSOLE
+### TASK 1: NAVIGATE TO THE CLOUDFORMATION CONSOLE
 At the top of the page, in the unified search bar, search for and choose CloudFormation.
 The CloudFormation page is displayed.
 
 #### TASK 1.2: CREATE THE CLOUDFORMATION STACK
-Choose Create stack .
- Note: If the console starts you on the Stacks page instead of the Amazon CloudFormation landing page, then you can get to the Create stack page in two steps.
 
-Choose Create stack  .
+Run this:
 
-Choose With new resources (standard) .
+`sam build -t 01-StartTemplate.yaml`
 
-The Create Stack page is displayed.
+`sam deploy -g -t 01-StartTemplate.yaml`
 
-Configure the following:
-Select Template is ready.
-Select Amazon S3 URL.
-Copy the Task1TemplateUrl value from the left side of these lab instructions and paste it in the Amazon S3 URL text box.
-Choose Next .
-The Specify stack details page is displayed.
+* Set the Stack name as VPCStack
+* Leave the Parameters set to the default values.
+* This Stack can take up to 5 minutes to deploy the resources.
 
-Set the Stack name as VPCStack.
-
-Leave the Parameters set to the default values.
-
-Choose Next .
-
-The Configure stack options page is displayed. You can use this page to specify additional parameters. You can browse the page, but leave settings at the default values.
-
-Choose Next .
-The Review page is displayed. This page is a summary of all settings.
-
-At the bottom of the page, choose Submit .
-The stack details page is displayed.
-
- While the stack is being created, it’s listed on the Stacks page with a status of CREATE_IN_PROGRESS.
-
-Choose the Stack info tab.
-
-Occasionally choose the console refresh  .
-
-Wait for the Stack status to change to  CREATE_COMPLETE .
-
- Note: This Stack can take up to 5 minutes to deploy the resources.
-
-TASK 1.3: VIEW CREATED RESOURCES FROM THE CONSOLE
-Choose the Resources tab.
- The list shows the resources that are being created. CloudFormation determines the optimal order for resources to be created, such as creating the VPC before the subnet.
-
-Review the resources that were deployed in the stack.
-
-Choose the Events tab and scroll through the list.
-
- The list shows (in reverse order) the activities performed by CloudFormation, such as starting to create a resource and then completing the resource creation. Any errors encountered during the creation of the stack is listed in this tab.
-
-Choose the Outputs tab.
-
-Review the key value pairs in the Outputs section. These values may be useful in later lab tasks.
-
- Congratulations! You have learned to configure the stack and created all of the resources using the provided CloudFormation template.
-
-Task 2: Create an Amazon RDS database
+### Task 2: Create an Amazon RDS database
 In this task, you deploy a highly available database for use by WordPress.
 
-TASK 2.1: NAVIGATE TO THE AMAZON RDS CONSOLE
-At the top of the page, in the unified search bar, search for and choose RDS.
-The Amazon RDS console page is displayed.
+* At the top of the page, in the unified search bar, search for and choose RDS. The Amazon RDS console page is displayed.
 
-TASK 2.2: CREATE A NEW AMAZON AURORA DATABASE
-In the left navigation pane, choose Databases.
+* In the left navigation pane, choose Databases.
 
-Choose Create database .
+* Choose **Create database**
 
-The Create database page is displayed.
+* In the Choose a database creation method section, select  **Standard create**
 
-In the Choose a database creation method section, select  Standard create .
+* In the Engine options section, configure the following:
 
-In the Engine options section, configure the following:
+    * For Engine type, select Aurora (MySQL Compatible).
 
-For Engine type, select Aurora (MySQL Compatible).
-In the Templates section, select Production.
+    * In the Templates section, select Production.
 
-In the Settings section, configure the following:
+* In the Settings section, configure the following:
 
-For DB cluster identifier, enter MyDBCluster
-For Master username, enter admin
-For Master password, paste the LabPassword value from the left side of these lab instructions.
-Confirm master password, paste the LabPassword value from the left side of these lab instructions.
-In the Instance configuration section:
-For DB instance class, select Burstable classes.
-For instance type, select db.t3.medium.
-In the Availability & durability section, for Multi-AZ deployment, select Create an Aurora Replica or Reader node in a different AZ.
+    * For DB cluster identifier, enter MyDBCluster
 
-In the Connectivity section:
+    * For Master username, enter admin
 
-For Virtual private cloud (VPC), select LabVPC.
+    * For Master password, paste the LabPassword value from the left side of these lab instructions.
 
-For DB subnet group, select labdbsubnetgroup.
+    * Confirm master password, paste the LabPassword value from the left side of these lab instructions.
 
-For Public access, select No.
+* In the Instance configuration section:
+    * For DB instance class, select Burstable classes.
+    * For instance type, select db.t3.medium.
 
-For VPC security group, select Choose existing.
+* In the Availability & durability section, for Multi-AZ deployment, select Create an Aurora Replica or Reader node in a different AZ.
 
-For Existing VPC security groups:
+* In the Connectivity section:
 
-Select xxxxx-RDSSecurityGroup-xxxxx.
-To remove the default security group, choose the X.
-Expand the  Additional configuration section and configure the following:
+    * For Virtual private cloud (VPC), select LabVPC.
 
-Database port: Leave the configuration at the default value.
-In the Monitoring section, deselect Enable Enhanced monitoring.
+    * For DB subnet group, select labdbsubnetgroup.
 
-Scroll to the bottom of the page and expand the main  Additional configuration section.
+    * For Public access, select No.
 
-In the Database options section:
+    * For VPC security group, select Choose existing.
 
-For Initial database name, enter WPDatabase
-In the Encryption section, deselect Enable encryption.
+* For Existing VPC security groups:
 
-In the Maintenance section, deselect Enable auto minor version upgrade.
+    * Select xxxxx-RDSSecurityGroup-xxxxx.
 
-In the Deletion protection section, deselect Enable deletion protection.
+* Expand the  Additional configuration section and configure the following:
 
-Scroll to the bottom of the screen and choose Create database .
+    * Database port: Leave the configuration at the default value.
+    
+    * In the Monitoring section, deselect Enable Enhanced monitoring.
 
-On the Suggested add-ons for mydbcluster pop-up window, choose Close
+* Scroll to the bottom of the page and expand the main  Additional configuration section. In the Database options section:
 
- Note: Your Aurora MySQL DB cluster is in the process of launching. The cluster you configured consists of two instances, each in a different Availability Zone. The Amazon Aurora DB cluster can take up to 5 minutes to launch. Wait for the mydbcluster status to change to Available. You do not have to wait for the availability of the instances to continue.
+    * For Initial database name, enter WPDatabase*
 
- Expected service output:
+    * In the Encryption section, deselect Enable encryption.
 
- Successfully created database mydbcluster
+    * In the Maintenance section, deselect Enable auto minor version upgrade.
+
+    * In the Deletion protection section, deselect Enable deletion protection.
+
+* Scroll to the bottom of the screen and choose Create database. On the Suggested add-ons for mydbcluster pop-up window, choose Close
+
+ **Note:** Your Aurora MySQL DB cluster is in the process of launching. The cluster you configured consists of two instances, each in a different Availability Zone. The Amazon Aurora DB cluster can take up to 5 minutes to launch. Wait for the mydbcluster status to change to Available. You do not have to wait for the availability of the instances to continue.
 
 
-Choose View connection details displayed on the success message border to save the connection details of your mydbcluster database to a text editor.
+Choose View connection details displayed on the success message border to save the connection details of your mydbcluster database to a text editor. On the Connection details to your database mydbcluster pop-up window, choose Close.
 
-On the Connection details to your database mydbcluster pop-up window, choose Close .
+#### TASK 2.1: COPY DATABASE METADATA
 
-TASK 2.4: COPY DATABASE METADATA
-In the left navigation pane, choose Databases.
+* In the left navigation pane, choose Databases.
 
-Choose the mydbcluster link.
+* Choose the mydbcluster link.
 
-Choose the Connectivity & security tab.
+* Choose the Connectivity & security tab.
 
-Copy the endpoint value for the Writer instance to a text editor.
+* Copy the endpoint value for the Writer instance to a text editor.
 
- Note: To copy the Writer instance endpoint, hover on it and choose the copy  icon.
+    **Note:** To copy the Writer instance endpoint, hover on it and choose the copy  icon.
 
-Choose the Configuration tab.
+* Choose the Configuration tab.
 
-Copy the Master username value to a text editor.
+* Copy the Master username value to a text editor.
 
-For Master password, use the LabPassword value from the left side of these lab instructions.
+* For Master password, use the LabPassword value from the left side of these lab instructions.
 
-In the left navigation pane, choose Databases.
+* In the left navigation pane, choose Databases.
 
-Choose the mydbcluster-instance-x writer instance link.
+* Choose the mydbcluster-instance-x writer instance link.
 
-Choose the Configuration tab.
+* Choose the Configuration tab.
 
-Copy the DB name value to a text editor.
+* Copy the DB name value to a text editor.
 
- Additional information: WordPress uses its database to store articles, users, and configuration information.
+**Additional information:** WordPress uses its database to store articles, users, and configuration information.
 
- Congratulations! You have successfully created a highly available & fully managed relational database across those availability zones using Amazon RDS.
 
-Task 3: Create an Amazon ElastiCache for Memcached
+### Task 3: Create an Amazon ElastiCache for Memcached
 In this task, you create a database caching layer using Amazon ElastiCache. This provides a cache around the database for frequently run queries, improving HTTP response time performance and reducing strain on the database instantiated in the previous task.
 
-TASK 3.1: NAVIGATE TO THE AMAZON ELASTICACHE CONSOLE
+#### TASK 3.1: NAVIGATE TO THE AMAZON ELASTICACHE CONSOLE
 At the top of the page, in the unified search bar, search for and choose ElastiCache.
 The Amazon ElastiCache page is displayed.
 
-TASK 3.2: CREATE THE AMAZON ELASTICACHE CLUSTER
+#### TASK 3.2: CREATE THE AMAZON ELASTICACHE CLUSTER
 In the left navigation pane, under Resources, choose Memcached caches.
 
 Choose Create Memcached cache .
@@ -231,14 +179,14 @@ Choose Create .
 
  Congratulations! You have successfully created a database caching layer using Amazon ElastiCache for use by WordPress.
 
-Task 4: Create an Amazon EFS file system
+### Task 4: Create an Amazon EFS file system
 In this task, you provision a shared storage layer using Amazon EFS that creates an NFS cluster across multiple availability zones.
 
-TASK 4.1: NAVIGATE TO THE EFS CONSOLE
+#### TASK 4.1: NAVIGATE TO THE EFS CONSOLE
 At the top of the page, in the unified search bar, search for and choose EFS.
 The Amazon Elastic File System page is displayed.
 
-TASK 4.2: CREATE A NEW FILE SYSTEM
+#### TASK 4.2: CREATE A NEW FILE SYSTEM
 Choose Create file system .
 
 On the Create file system page, choose Customize .
@@ -282,14 +230,14 @@ On the Review and create page, scroll to the bottom of the page and choose Creat
 Copy the File system ID generated for myWPEFS to a text editor. It has a format like fs-a1234567.
  Congratulations! You have successfully created the Amazon EFS that created the NFS cluster across multiple availability zones.
 
-Task 5: Create an Application Load Balancer
+### Task 5: Create an Application Load Balancer
 In this task, you create the Application Load Balancer and a target group.
 
-TASK 5.1: NAVIGATE TO THE AMAZON EC2 CONSOLE
+#### TASK 5.1: NAVIGATE TO THE AMAZON EC2 CONSOLE
 At the top of the page, in the unified search bar, search for and choose EC2.
 The EC2 Dashboard page is displayed.
 
-TASK 5.2: CREATE A TARGET GROUP
+#### TASK 5.2: CREATE A TARGET GROUP
 In the left navigation pane, choose Target Groups.
 
 Choose Create target group .
@@ -321,7 +269,7 @@ On the Register targets page, scroll to the bottom of the page and choose Create
  Successfully created target group: myWPTargetGroup
 
 
-TASK 5.3: CREATE AN APPLICATION LOAD BALANCER
+#### TASK 5.3: CREATE AN APPLICATION LOAD BALANCER
 In the left navigation pane, choose Load Balancers.
 
 Choose Create load balancer .
@@ -360,14 +308,14 @@ Copy the DNS name to a text editor.
 
  Congratulations! You have created the target group and a public facing load balancer.
 
-Task 6: Create a launch template using CloudFormation
+### Task 6: Create a launch template using CloudFormation
 In this task, you use a CloudFormation template to deploy the WordPress user data within an Amazon Elastic Compute Cloud (Amazon EC2) Auto Scaling launch template. The template includes the EFS mount points and the Aurora configurations.
 
-TASK 6.1: NAVIGATE TO THE CLOUDFORMATION CONSOLE
+#### TASK 6.1: NAVIGATE TO THE CLOUDFORMATION CONSOLE
 At the top of the page, in the unified search bar, search for and choose CloudFormation.
 The CloudFormation page is displayed.
 
-TASK 6.2: CREATE THE CLOUDFORMATION STACK
+#### TASK 6.2: CREATE THE CLOUDFORMATION STACK
 Choose Create stack .
  Note: If the console starts you on the Stacks page instead of the Amazon CloudFormation landing page, then you can get to the Create stack page in two steps.
 
@@ -387,16 +335,17 @@ In the Parameters section, for DB Name, paste the initial database name you copi
 
  Note: Make sure that you paste the initial database name, not the cluster name.
 
-For Database endpoint, paste the writer endpoint you copied in Task 2.
-For Database User Name, paste the Master username you copied in Task 2.
-For Database Password, paste the LabPassword value from the left side of these lab instructions.
-For WordPress admin username, defaults to wpadmin.
-For WordPress admin password, paste the LabPassword value from the left side of these lab instructions.
-For WordPress admin email address, input a valid email address.
-For Instance Type, leave the default value of t3.medium.
-For ALBDnsName, paste the DNS name value you copied in Task 5.
-For LatestAL2AmiId, leave the default value.
-For WPElasticFileSystemID, paste the File system ID value you copied in Task 4.
+* For Database endpoint, paste the writer endpoint you copied in Task 2.
+* For Database User Name, paste the Master username you copied in Task 2.
+* For Database Password, paste the LabPassword value from the left side of these lab instructions.
+* For WordPress admin username, defaults to wpadmin.
+* For WordPress admin password, paste the LabPassword value from the left side of these lab instructions.
+* For WordPress admin email address, input a valid email address.
+* For Instance Type, leave the default value of t3.medium.
+* For ALBDnsName, paste the DNS name value you copied in Task 5.
+* For LatestAL2AmiId, leave the default value.
+* For WPElasticFileSystemID, paste the File system ID value you copied in Task 4.
+
 Choose Next .
 
 On the Configure stack options page, choose Next .
@@ -418,16 +367,16 @@ Wait for the stack status to change to  CREATE_COMPLETE .
 
  Note: This stack can take up to 5 minutes to deploy the resources.
 
-TASK 6.3: VIEW CREATED RESOURCES FROM THE CONSOLE
+#### TASK 6.3: VIEW CREATED RESOURCES FROM THE CONSOLE
 Choose the Resources tab.
 The list shows the resources that are created.
 
  Congratulations! You have created the Launch template which is used to launch WordPress servers.
 
-Task 7: Create the application servers by configuring an Auto Scaling group and a scaling policy
+### Task 7: Create the application servers by configuring an Auto Scaling group and a scaling policy
 In this task, you create the WordPress application servers by configuring an Auto Scaling group and a scaling policy.
 
-TASK 7.1: CREATING AN AUTO SCALING GROUP
+#### TASK 7.1: CREATING AN AUTO SCALING GROUP
 At the top of the page, in the unified search bar, search for and choose EC2.
 The EC2 Dashboard page is displayed.
 
@@ -506,7 +455,7 @@ If your instances have not reached the InService state yet, you need to wait a f
 Choose the Monitoring tab. Here, you can review monitoring-related information for your Auto Scaling group.
 This page provides information about activity in your Auto scaling group, as well as the usage and health status of your instances. The Auto Scaling tab displays Amazon CloudWatch metrics about your Auto Scaling group, while the EC2 tab displays metrics for the Amazon EC2 instances managed by the Auto Scaling group.
 
-TASK 7.2: VERIFY THE TARGET GROUPS ARE HEALTHY
+#### TASK 7.2: VERIFY THE TARGET GROUPS ARE HEALTHY
 In the left navigation pane, choose Target Groups.
 
 Choose the myWPTargetGroup link.
@@ -515,7 +464,7 @@ In the Targets tab, wait until the instance Health status is displayed as health
 
  Note: It can take up to 5 minutes for the health checks to show as healthy.
 
-TASK 7.3: LOGIN TO THE APPLICATION
+#### TASK 7.3: LOGIN TO THE APPLICATION
 In the left navigation pane, choose Load Balancers.
 
 Copy the DNS name to a text editor and append the value /wp-login.php to the end of the DNS name to complete your WordPress application URL.
@@ -537,16 +486,16 @@ The WordPress management website is displayed.
 
  Congratulations! You have now created a highly-available auto-scaling deployment of WordPress application that scales in and out.
 
-Task 8: Chaos testing with AWS Fault Injection Simulator
+### Task 8: Chaos testing with AWS Fault Injection Simulator
 In this task, you test the application high availability using chaos engineering. You randomly terminate EC2 instances and see if the auto scaling group and load balancer can reroute the traffic to healthy hosts and start new EC2 instances to keep the required capacity.
 
  Additional information: However, turning off EC2 instances manually is not a scalable solution. You use the AWS Fault Injection Simulator to automate this test.
 
-TASK 8.1: NAVIGATE TO THE CONSOLE
+#### TASK 8.1: NAVIGATE TO THE CONSOLE
 At the top of the page, in the unified search bar, search for and choose AWS FIS.
 The AWS FIS page is displayed.
 
-TASK 8.2: TEST SCENARIO AND ASSUMPTIONS
+#### TASK 8.2: TEST SCENARIO AND ASSUMPTIONS
  Additional information: To run a successful fault injection test you need to form an assumption and test it. The assumption for this experiment is:
 
  Example: If one of the Availability Zone (AZ) has an outage, and all the EC2 in that AZ stops, our web application remains available. The load balancer routes the traffic to other AZs and the auto scaling group starts new EC2s to keep the required number of instances.
@@ -605,7 +554,7 @@ Choose Create experiment template .
  You successfully created experiment template EXT9VzxxxxX / Terminate instances in an AZ to simulate AZ outage.
 
 
-TASK 8.3: START THE EXPERIMENT
+#### TASK 8.3: START THE EXPERIMENT
 In the left navigation pane, choose Experiment templates.
 
 Choose the Experiment template ID link.
@@ -627,7 +576,7 @@ Choose Start experiment .
 
  Note: Wait for the State to change to Completed.
 
-TASK 8.4: OBSERVE THE EXPERIMENT
+#### TASK 8.4: OBSERVE THE EXPERIMENT
 Return to the WordPress website browser tab and refresh  the page every few seconds.
  Expected output: The website should continue to load correctly.
 
@@ -678,7 +627,7 @@ Choose End lab and then confirm that you want to end your lab.
 
 Appendix
 
-CHALLENGE TASK SOLUTION
+#### CHALLENGE TASK SOLUTION
 Navigate to the CloudFormation console
 At the top of the page, in the unified search bar, search for and choose CloudFormation.
 Create the CloudFormation stack

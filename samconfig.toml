@@ -1,0 +1,9 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "sam-app"
+resolve_s3 = true
+s3_prefix = "sam-app"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "LatestAL2AmiId=\"/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2\" DatabaseName=\"WPDatabase\" DatabaseHostName=\"\" DatabaseUsername=\"admin\" Username=\"wpadmin\" Email=\"carlos@hotmail.com\" EC2ServerInstanceType=\"t3.medium\" ALBDnsName=\"\" WPElasticFileSystemID=\"\""
+image_repositories = []
