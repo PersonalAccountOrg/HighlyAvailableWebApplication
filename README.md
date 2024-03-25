@@ -129,84 +129,58 @@ Choose View connection details displayed on the success message border to save t
 
 **Additional information:** WordPress uses its database to store articles, users, and configuration information.
 
-
 ### Task 3: Create an Amazon ElastiCache for Memcached
 In this task, you create a database caching layer using Amazon ElastiCache. This provides a cache around the database for frequently run queries, improving HTTP response time performance and reducing strain on the database instantiated in the previous task.
 
-#### TASK 3.1: NAVIGATE TO THE AMAZON ELASTICACHE CONSOLE
-At the top of the page, in the unified search bar, search for and choose ElastiCache.
-The Amazon ElastiCache page is displayed.
+At the top of the page, in the unified search bar, search for and choose ElastiCache. The Amazon ElastiCache page is displayed. In the left navigation pane, under Resources, choose Memcached caches.
 
-#### TASK 3.2: CREATE THE AMAZON ELASTICACHE CLUSTER
-In the left navigation pane, under Resources, choose Memcached caches.
+* Choose Create Memcached cache
 
-Choose Create Memcached cache .
+* On the Create Memcached cache page, in the Choose a cluster creation method section:
 
-The Cluster settings page is displayed.
+   * For Deployment option, choose Design your own cache.
+   * Next, choose Standard create.
 
-On the Create Memcached cache page, in the Choose a cluster creation method section:
-For Deployment option, choose Design your own cache.
-Next, choose Standard create.
-In the Cluster info section:
-For Name, enter MyWPCache.
-In the Cluster settings section:
-For Node type, select cache.t3.micro.
-For Number of nodes, enter 2.
-Choose Next .
+* In the Cluster info section:
+   * For Name, enter **MyWPCache**
 
-In the Selected security groups section:
+* In the Cluster settings section:
+   * For Node type, select cache.t3.micro.
+   * For Number of nodes, enter 2.
+   * Choose Next
 
-Choose Manage .
-The Manage security groups window is displayed.
+* In the Selected security groups section:
 
-Select xxx-ElastiCacheSecurityGroup-xxx and then Choose .
-
-Choose Next .
-
-Choose Create .
-
- Expected service output:
-
- The cluster was created successfully
-
-
- Congratulations! You have successfully created a database caching layer using Amazon ElastiCache for use by WordPress.
+   * Choose Manage
+   * The Manage security groups window is displayed. Select **xxx-ElastiCacheSecurityGroup-xxx** and then Choose
+   * Choose Next
+   
+* Choose Create
 
 ### Task 4: Create an Amazon EFS file system
 In this task, you provision a shared storage layer using Amazon EFS that creates an NFS cluster across multiple availability zones.
 
-#### TASK 4.1: NAVIGATE TO THE EFS CONSOLE
-At the top of the page, in the unified search bar, search for and choose EFS.
-The Amazon Elastic File System page is displayed.
+At the top of the page, in the unified search bar, search for and choose EFS. The Amazon Elastic File System page is displayed.
 
-#### TASK 4.2: CREATE A NEW FILE SYSTEM
-Choose Create file system .
-
-On the Create file system page, choose Customize .
-
-On the File system settings page, in the General section:
-
-For Name, enter myWPEFS
-Deselect Enable automatic backups.
-In the Tags - optional section:
-For Tag key, enter Name
-For Tag value – optional, enter myWPEFS
-Leave all other settings at their default value.
-Choose Next .
-
-On the Network access page:
-
-For Virtual Private Cloud (VPC), select LabVPC.
-On the Mount targets page:
-For Availability Zone, select the Availability Zone ending in “a”.
-For Subnet ID, select AppSubnet1.
-For Security group, select xxxxx-EFSMountTargetSecurityGroup-xxxxx
-To remove the default Security group, choose the X.
-For Availability Zone, select Availability Zone ending in “b”.
-For Subnet ID, select AppSubnet2.
-For Security group, select xxxxx-EFSMountTargetSecurityGroup-xxxxx.
-To remove the default Security group, choose the X.
-Choose Next .
+* Choose Create file system .
+* On the Create file system page, choose Customize
+* On the File system settings page, in the General section:
+   * For Name, enter **myWPEFS**
+   * Deselect Enable automatic backups.
+* In the Tags - optional section:
+   * For Tag key, enter **Name**
+   * For Tag value – optional, enter **myWPEFS**
+   * Leave all other settings at their default value.
+   * Choose Next
+* On the Network access page:
+   * For Virtual Private Cloud (VPC), select LabVPC.
+   * For Availability Zone, select the Availability Zone ending in “a”.
+   * For Subnet ID, select AppSubnet1.
+   * For Security group, select xxxxx-EFSMountTargetSecurityGroup-xxxxx
+   * For Availability Zone, select Availability Zone ending in “b”.
+   * For Subnet ID, select AppSubnet2.
+   * For Security group, select **xxxxx-EFSMountTargetSecurityGroup-xxxxx.**
+   * Choose Next
 
 On the File system policy – optional page, choose Next .
 
