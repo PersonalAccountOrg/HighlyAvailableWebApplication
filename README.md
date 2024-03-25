@@ -57,13 +57,11 @@ In this task, you deploy a highly available database for use by WordPress.
 
 * In the Settings section, configure the following:
 
-    * For DB cluster identifier, enter MyDBCluster
+    * For DB cluster identifier, enter **MyDBCluster**
 
     * For Master username, enter admin
 
-    * For Master password, paste the LabPassword value from the left side of these lab instructions.
-
-    * Confirm master password, paste the LabPassword value from the left side of these lab instructions.
+    * Select **Auto generate password**
 
 * In the Instance configuration section:
     * For DB instance class, select Burstable classes.
@@ -79,11 +77,7 @@ In this task, you deploy a highly available database for use by WordPress.
 
     * For Public access, select No.
 
-    * For VPC security group, select Choose existing.
-
-* For Existing VPC security groups:
-
-    * Select xxxxx-RDSSecurityGroup-xxxxx.
+    * For VPC security group, select Choose existing. Select xxxxx-RDSSecurityGroup-xxxxx.
 
 * Expand the  Additional configuration section and configure the following:
 
@@ -104,7 +98,6 @@ In this task, you deploy a highly available database for use by WordPress.
 * Scroll to the bottom of the screen and choose Create database. On the Suggested add-ons for mydbcluster pop-up window, choose Close
 
  **Note:** Your Aurora MySQL DB cluster is in the process of launching. The cluster you configured consists of two instances, each in a different Availability Zone. The Amazon Aurora DB cluster can take up to 5 minutes to launch. Wait for the mydbcluster status to change to Available. You do not have to wait for the availability of the instances to continue.
-
 
 Choose View connection details displayed on the success message border to save the connection details of your mydbcluster database to a text editor. On the Connection details to your database mydbcluster pop-up window, choose Close.
 
