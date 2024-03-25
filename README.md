@@ -53,7 +53,7 @@ In this task, you deploy a highly available database for use by WordPress.
 
     * For Engine type, select Aurora (MySQL Compatible).
 
-    * In the Templates section, select Production.
+* In the Templates section, select Production.
 
 * In the Settings section, configure the following:
 
@@ -93,7 +93,7 @@ In this task, you deploy a highly available database for use by WordPress.
 
 * Scroll to the bottom of the page and expand the main  Additional configuration section. In the Database options section:
 
-    * For Initial database name, enter WPDatabase*
+    * For Initial database name, enter **WPDatabase**
 
     * In the Encryption section, deselect Enable encryption.
 
