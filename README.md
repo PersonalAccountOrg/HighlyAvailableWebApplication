@@ -436,108 +436,31 @@ Choose the Activity tab.
 
  Congratulations! You have successfully conducted the experiment, the WordPress site remained functional. The website auto-healed from the AZ outage and website is back to the desired capacity in just a few minutes. This verifies highly-available architecture is working as intended.
 
-Challenge yourself!
-SPEEDUP THE WORDPRESS WEBSITE
- Challenge Task
+### Challenge yourself!
+#### SPEEDUP THE WORDPRESS WEBSITE
 
-Add a content delivery network using Amazon CloudFront to speed up global delivery of the WordPress application then replace the Site Address (URL) with the CloudFront DNS hostname and view the public facing WordPress site created in this lab.
+Add a content delivery network using SAM to speed up global delivery of the WordPress application then replace the Site Address (URL) with the CloudFront DNS hostname and view the public facing WordPress site created in this lab.
 
- Navigate here for a solution.
+*Additional information: Amazon CloudFront can speed up the delivery of your websites, whether its static objects (e.g., images, style sheets, JavaScript, etc.) or dynamic content (e.g., videos, audio, motion graphics, etc.), to viewers across the globe. The CDN offers a multi-tier cache by default that improves latency and lowers the load on origin servers when the object is not already cached at the Edge. The CloudFront distribution caches the content, improves latency for users across the globe and lowers the load on origin WordPress servers.*
 
- Additional information: Amazon CloudFront can speed up the delivery of your websites, whether its static objects (e.g., images, style sheets, JavaScript, etc.) or dynamic content (e.g., videos, audio, motion graphics, etc.), to viewers across the globe. The CDN offers a multi-tier cache by default that improves latency and lowers the load on origin servers when the object is not already cached at the Edge.
+Run this:
 
- Optional Task
+`sam build -t 03-WPCloudFrontStack.yaml`
 
-You created an Elasticache for Memcached instance in Task 3. Now, configure the WordPress to use that service. To improve the site’s response time and to reduce the strain on your backend database, WordPress is configured to use Memcached as a caching layer for common requests.
-
- Note: For the purposes of testing, you can also add dummy content to the WordPress website.
-
-Conclusion
- Congratulations! You now have successfully:
-
-Deployed a virtual network spread across multiple Availability Zones in a Region using a provided CloudFormation template.
-Created a highly available and fully managed relational database across those Availability Zones using Amazon Relational Database Service (Amazon RDS).
-Created a database caching layer using Amazon ElastiCache.
-Used Amazon Elastic File System (Amazon EFS) to provision a shared storage layer across multiple Availability Zones for the application tier, powered by Network File System (NFS).
-Created a group of web servers that would automatically scale in response to load variations to complete the application tier.
-End lab
-Follow these steps to close the console and end your lab.
-
-Return to the AWS Management Console.
-
-At the upper-right corner of the page, choose AWSLabsUser, and then choose Sign out.
-
-Choose End lab and then confirm that you want to end your lab.
-
-Appendix
-
-#### CHALLENGE TASK SOLUTION
-Navigate to the CloudFormation console
-At the top of the page, in the unified search bar, search for and choose CloudFormation.
-Create the CloudFormation stack
-Choose Create stack .
- Note: If the console starts you on the Stacks page instead of the Amazon CloudFormation landing page, then you can get to the Create stack page in two steps.
-
-Choose Create stack  .
-
-Choose With new resources (standard) .
-
-The Create Stack page is displayed.
-
-Configure the following:
-Select Template is ready.
-
-Select Amazon S3 URL.
-
-Copy the ChallengeTaskTemplateUrl value from the left side of these lab instructions and paste it in the Amazon S3 URL text box.
-
-Choose Next .
-
-The Specify stack details page is displayed.
-
-Set the Stack name as WPCloudFrontStack.
+`sam deploy -g -t 03-WPCloudFrontStack.yaml`
 
 Configure the following parameters:
 
-For CloudFront Certificate ARN, leave this optional parameter empty.
-For Domain name, leave this optional parameter empty.
-For ALBDnsName, paste the load balancer DNS name value you copied in Task 4.
-Choose Next .
-The Configure stack options page is displayed. You can use this page to specify additional parameters. You can browse the page, but leave settings at their default values.
+* For CloudFront Certificate ARN, leave this optional parameter empty.
+* For Domain name, leave this optional parameter empty.
+* For ALBDnsName, paste the load balancer DNS name value you copied in Task 4.
+* Wait for the stack status to change to  CREATE_COMPLETE .
 
-Choose Next .
-The Review page is displayed. This page is a summary of all settings.
+**Note:** This stack can take up to 5 minutes to deploy the resources.
 
-Scroll to the bottom of the page and choose Submit .
-The stack details page is displayed.
-
- While the stack is being created, it’s listed on the Stacks page with a status of CREATE_IN_PROGRESS.
-
-Choose the Stack info tab.
-
-Occasionally choose the console refresh  .
-
-Wait for the stack status to change to  CREATE_COMPLETE .
-
- Note: This stack can take up to 5 minutes to deploy the resources.
-
-View created resources from the console
-Choose the Resources tab.
-The list shows the resources that are created.
-
-Choose the Outputs tab.
-
-Copy the DnsHostname value to a Text Editor.
-
-Login to WordPress Admin console
-Return to WordPress Management site.
-
-In the left menu, navigate to Settings > General tab.
-
-Replace the Site Address(URL) with the DNSHostname copied earlier.
-
-Browse to the CloudFront DNS name to view the public facing WordPress site.
-
- Additional information: The CloudFront distribution caches the content, improves latency for users across the globe and lowers the load on origin WordPress servers.
-
-Return to the instructions
+* Copy the DnsHostname value to a Text Editor.
+* Login to WordPress Admin console
+* Return to WordPress Management site.
+* In the left menu, navigate to Settings > General tab.
+* Replace the Site Address(URL) with the DNSHostname copied earlier.
+* Browse to the CloudFront DNS name to view the public facing WordPress site.
