@@ -451,6 +451,7 @@ Run this:
 
 Configure the following parameters:
 
+* Set the Stack name as **WPCloudFrontStack**
 * For CloudFront Certificate ARN, leave this optional parameter empty.
 * For Domain name, leave this optional parameter empty.
 * For ALBDnsName, paste the load balancer DNS name value you copied in Task 4.
