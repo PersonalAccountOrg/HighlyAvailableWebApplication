@@ -51,9 +51,9 @@ In this task, you deploy a highly available database for use by WordPress.
 
 * In the Engine options section, configure the following:
 
-    * For Engine type, select Aurora (MySQL Compatible).
+    * For Engine type, select **Aurora (MySQL Compatible)**
 
-* In the Templates section, select Production.
+* In the Templates section, select **Production**
 
 * In the Settings section, configure the following:
 
@@ -64,60 +64,40 @@ In this task, you deploy a highly available database for use by WordPress.
     * Select **Auto generate password**
 
 * In the Instance configuration section:
-    * For DB instance class, select Burstable classes.
-    * For instance type, select db.t3.medium.
+    * For DB instance class, select **Burstable classes**
+    * For instance type, select **db.t3.medium**
 
-* In the Availability & durability section, for Multi-AZ deployment, select Create an Aurora Replica or Reader node in a different AZ.
+* In the Availability & durability section, for Multi-AZ deployment, select **Create an Aurora Replica or Reader node in a different AZ**
 
 * In the Connectivity section:
 
-    * For Virtual private cloud (VPC), select LabVPC.
+    * For Virtual private cloud (VPC), select **LabVPC**
 
-    * For DB subnet group, select labdbsubnetgroup.
+    * For DB subnet group, select **labdbsubnetgroup**
 
-    * For Public access, select No.
+    * For Public access, select **No**
 
-    * For VPC security group, select Choose existing. Select xxxxx-RDSSecurityGroup-xxxxx.
+    * For VPC security group, select Choose existing. Select **xxxxx-RDSSecurityGroup-xxxxx**
 
 * Expand the  Additional configuration section and configure the following:
 
     * Database port: Leave the configuration at the default value.
     
-    * In the Monitoring section, deselect Enable Enhanced monitoring.
+    * In the Monitoring section, **deselect Enable Enhanced monitoring**
 
 * Scroll to the bottom of the page and expand the main  Additional configuration section. In the Database options section:
 
     * For Initial database name, enter **WPDatabase**
 
-    * In the Encryption section, deselect Enable encryption.
+    * In the Encryption section, **deselect Enable encryption**
 
-    * In the Maintenance section, deselect Enable auto minor version upgrade.
+    * In the Maintenance section, **deselect Enable auto minor version upgrade**
 
-    * In the Deletion protection section, deselect Enable deletion protection.
+    * In the Deletion protection section, **deselect Enable deletion protection**
 
-* Scroll to the bottom of the screen and choose Create database. On the Suggested add-ons for mydbcluster pop-up window, choose Close
+* Scroll to the bottom of the screen and choose Create database. On the Suggested add-ons for mydbcluster pop-up window, choose Close. Click the 'View credential details' in the database creation banner to view the password. Copy the credentials and the endpoint value.
 
  **Note:** Your Aurora MySQL DB cluster is in the process of launching. The cluster you configured consists of two instances, each in a different Availability Zone. The Amazon Aurora DB cluster can take up to 5 minutes to launch. Wait for the mydbcluster status to change to Available. You do not have to wait for the availability of the instances to continue.
-
-Choose View connection details displayed on the success message border to save the connection details of your mydbcluster database to a text editor. On the Connection details to your database mydbcluster pop-up window, choose Close.
-
-#### TASK 2.1: COPY DATABASE METADATA
-
-* In the left navigation pane, choose Databases.
-
-* Choose the mydbcluster link.
-
-* Choose the Connectivity & security tab.
-
-* Copy the endpoint value for the Writer instance to a text editor.
-
-    **Note:** To copy the Writer instance endpoint, hover on it and choose the copy  icon.
-
-* Choose the Configuration tab.
-
-* Copy the Master username value to a text editor.
-
-* For Master password, use the LabPassword value from the left side of these lab instructions.
 
 * In the left navigation pane, choose Databases.
 
@@ -138,20 +118,20 @@ At the top of the page, in the unified search bar, search for and choose ElastiC
 
 * On the Create Memcached cache page, in the Choose a cluster creation method section:
 
-   * For Deployment option, choose Design your own cache.
-   * Next, choose Standard create.
+   * For Deployment option, choose **Design your own cache**
+   * Next, choose **Standard create**
 
 * In the Cluster info section:
    * For Name, enter **MyWPCache**
 
 * In the Cluster settings section:
-   * For Node type, select cache.t3.micro.
-   * For Number of nodes, enter 2.
+   * For Node type, select **cache.t3.micro**
+   * For Number of nodes, enter **2**
    * Choose Next
 
 * In the Selected security groups section:
 
-   * Choose Manage
+   * Choose **Manage**
    * The Manage security groups window is displayed. Select **xxx-ElastiCacheSecurityGroup-xxx** and then Choose
    * Choose Next
    
@@ -164,11 +144,11 @@ At the top of the page, in the unified search bar, search for and choose EFS. Th
 
 * Choose Create file system .
 
-* On the Create file system page, choose Customize
+* On the Create file system page, choose **Customize**
 
 * On the File system settings page, in the General section:
    * For Name, enter **myWPEFS**
-   * Deselect Enable automatic backups.
+   * **Deselect Enable automatic backups**
 
 * In the Tags - optional section:
    * For Tag key, enter **Name**
@@ -177,12 +157,12 @@ At the top of the page, in the unified search bar, search for and choose EFS. Th
    * Choose Next
 
 * On the Network access page:
-   * For Virtual Private Cloud (VPC), select LabVPC.
+   * For Virtual Private Cloud (VPC), select **LabVPC**
    * For Availability Zone, select the Availability Zone ending in “a”.
-   * For Subnet ID, select AppSubnet1.
-   * For Security group, select xxxxx-EFSMountTargetSecurityGroup-xxxxx
+   * For Subnet ID, select **AppSubnet1**
+   * For Security group, select **xxxxx-EFSMountTargetSecurityGroup-xxxxx**
    * For Availability Zone, select Availability Zone ending in “b”.
-   * For Subnet ID, select AppSubnet2.
+   * For Subnet ID, select **AppSubnet2**
    * For Security group, select **xxxxx-EFSMountTargetSecurityGroup-xxxxx.**
    * Choose Next
 
@@ -190,7 +170,7 @@ At the top of the page, in the unified search bar, search for and choose EFS. Th
 
 * On the Review and create page, scroll to the bottom of the page and choose Create .
 
-Copy the *File system ID* generated for myWPEFS to a text editor. It has a format like fs-a1234567.
+Copy the **File system ID** generated for myWPEFS to a text editor. It has a format like fs-a1234567.
 
 ### Task 5: Create an Application Load Balancer
 In this task, you create the Application Load Balancer and a target group. At the top of the page, in the unified search bar, search for and choose EC2.
@@ -198,9 +178,9 @@ In this task, you create the Application Load Balancer and a target group. At th
 * In the left navigation pane, choose Target Groups.
 * Choose Create target group
 * On the Specify group details page, in the Basic configuration section:
-   * For Choose a target type, select Instances.
+   * For Choose a target type, select **Instances**
    * For Target group name, enter **myWPTargetGroup**
-   * For VPC, select LabVPC.
+   * For VPC, select **LabVPC**
 * On the Specify group details page, in the Health checks section:
    * For Health check path, enter **/wp-login.php**
 
@@ -217,11 +197,11 @@ In this task, you create the Application Load Balancer and a target group. At th
 #### TASK 5.1: CREATE AN APPLICATION LOAD BALANCER
 In the left navigation pane, choose Load Balancers. Choose Create load balancer. 
 
-* In the Application Load Balancer section, choose Create
+* In the **Application Load Balancer** section, choose Create
 * For Load balancer name, enter **myWPAppALB**
 
 * On the Create Application Load Balancer page, in the Network mapping section:
-   * For VPC, choose LabVPC.
+   * For VPC, choose **LabVPC**
 
 For Mappings:
    * Select the first Availability Zone listed, and choose **PublicSubnet1** from the Subnet dropdown menu.
@@ -232,7 +212,7 @@ For Mappings:
    * To remove the default security group, choose the X.
 
 * In the Listeners and routing section:
-   * For Listener HTTP:80, choose myWPTargetGroup for the Default action.
+   * For Listener HTTP:80, choose **myWPTargetGroup** for the Default action.
 
 * Scroll to the bottom of the page and choose **Create load balancer**
 
@@ -258,7 +238,7 @@ Run this:
 * For WordPress admin username, defaults to **wpadmin**
 * For WordPress admin password, paste the LabPassword value from the left side of these lab instructions.
 * For WordPress admin email address, input a valid email address.
-* For Instance Type, leave the default value of t3.medium.
+* For Instance Type, leave the default value of **t3.medium**
 * For ALBDnsName, paste the DNS name value you copied in Task 5.
 * For LatestAL2AmiId, leave the default value.
 * For WPElasticFileSystemID, paste the File system ID value you copied in Task 4.
@@ -272,7 +252,7 @@ In this task, you create the WordPress application servers by configuring an Aut
 
 * On the Choose launch template or configuration page:
    * In the Name section, for Auto Scaling group name, enter **WP-ASG**
-   * In the Launch template section, for Launch Template, select LabLaunchTemplate.
+   * In the Launch template section, for Launch Template, select **LabLaunchTemplate**
 
 * Choose Next
 
@@ -283,12 +263,12 @@ In this task, you create the WordPress application servers by configuring an Aut
 * Choose Next
 
 * On the Configure advanced options page, configure the following:
-   * For Load balancing, select Attach to an existing load balancer.
-   * For Attach to an existing load balancer, select Choose from your load balancer target groups.
+   * For Load balancing, select **Attach to an existing load balancer**
+   * For Attach to an existing load balancer, select **Choose from your load balancer target groups**
    * For Existing load balancer target groups, select **myWPTargetGroup | HTTP**
-   * For Health checks, select Turn on Elastic Load Balancing health checks.
+   * For Health checks, select **Turn on Elastic Load Balancing health checks**
    * For Health check grace period, leave at the default value of 300 or more.
-   * For Monitoring, select Enable group metrics collection within CloudWatch.
+   * For Monitoring, select **Enable group metrics collection within CloudWatch**
 
 * Choose Next
 
@@ -298,7 +278,7 @@ In this task, you create the WordPress application servers by configuring an Aut
    * For Minimum capacity, enter 2
    * For Maximum capacity, enter 4
 
-* In the Automatic scaling - optional section, select the **Target tracking scaling policy option**. The remaining settings on this section can be left at their default values.
+* In the Automatic scaling - optional section, select the **Target tracking scaling policy** option. The remaining settings on this section can be left at their default values.
 
 * Choose Next
 
@@ -320,7 +300,7 @@ Choose the Instance management tab. Your Auto Scaling group has launched two Ama
 
 Choose the Monitoring tab. Here, you can review monitoring-related information for your Auto Scaling group. This page provides information about activity in your Auto scaling group, as well as the usage and health status of your instances. The Auto Scaling tab displays Amazon CloudWatch metrics about your Auto Scaling group, while the EC2 tab displays metrics for the Amazon EC2 instances managed by the Auto Scaling group.
 
-In the left navigation pane, choose Load Balancers. Copy the DNS name to a text editor and append the value /wp-login.php to the end of the DNS name to complete your WordPress application URL.
+In the left navigation pane, choose Load Balancers. Copy the DNS name to a text editor and append the value **/wp-login.php** to the end of the DNS name to complete your WordPress application URL.
 
 * Paste the WordPress application URL value into a new browser tab. The WordPress login page is displayed.
 * On the WordPress login page:
@@ -333,108 +313,60 @@ In the left navigation pane, choose Load Balancers. Copy the DNS name to a text 
 ### Task 8: Chaos testing with AWS Fault Injection Simulator
 In this task, you test the application high availability using chaos engineering. You randomly terminate EC2 instances and see if the auto scaling group and load balancer can reroute the traffic to healthy hosts and start new EC2 instances to keep the required capacity.
 
- Additional information: However, turning off EC2 instances manually is not a scalable solution. You use the AWS Fault Injection Simulator to automate this test.
+*Additional information: However, turning off EC2 instances manually is not a scalable solution. You use the AWS Fault Injection Simulator to automate this test. To run a successful fault injection test you need to form an assumption and test it. The assumption for this experiment is if one of the Availability Zone (AZ) has an outage, and all the EC2 in that AZ stops, our web application remains available. The load balancer routes the traffic to other AZs and the auto scaling group starts new EC2s to keep the required number of instances.*
 
-#### TASK 8.1: NAVIGATE TO THE CONSOLE
-At the top of the page, in the unified search bar, search for and choose AWS FIS.
-The AWS FIS page is displayed.
+* At the top of the page, in the unified search bar, search for and choose AWS FIS. The AWS FIS page is displayed.
+* From Create experiment from scenario drop-down menu, choose Create experiment template .
+* On the Account targeting pop-up page, choose the option This AWS account and choose Confirm .
+* On the Create experiment template page, in the Description and name section:
+   * For Description, enter Terminate instances in an AZ to simulate AZ outage
+   * For Name - optional, enter TerminateInstancesinAZ
+* In the Actions section:
+   * Choose Add action
+   * For Name, enter TerminateInstances
+   * For Action type, select EC2 and aws:ec2:terminate-instances.
+   * Choose Save
 
-#### TASK 8.2: TEST SCENARIO AND ASSUMPTIONS
- Additional information: To run a successful fault injection test you need to form an assumption and test it. The assumption for this experiment is:
+* In the Targets section, configure:
+   * Choose Edit
+   * For Target method, select Resource tags, filters and parameters.
+* For Resource tags:
+   * Choose Add new tag
+   * For Key, enter Name
+   * For Value, enter wp-ha-app
+* For Resource filters - optional:
+   * Choose Add new filter
+   * For Attribute path, enter Placement.AvailabilityZone
+   * For Values, enter LabRegion appended with “a” at the end.
+   * Choose Add new filter .
+   * For Attribute path, enter State.Name
+   * For Values, enter running.
+   * Choose Save
 
- Example: If one of the Availability Zone (AZ) has an outage, and all the EC2 in that AZ stops, our web application remains available. The load balancer routes the traffic to other AZs and the auto scaling group starts new EC2s to keep the required number of instances.
+* In the Service Access section, configure:
+   * Select Use an existing IAM role.
+   * For IAM role, select xxxx-FISRole-xxxx.
+   * Choose Create experiment template. The Create experiment template window is displayed.
+   * For To confirm that you want to create an experiment template without a stop condition, enter create in the field, enter create.
+   * Choose Create experiment template
 
-From Create experiment from scenario drop-down menu, choose Create experiment template .
-
-On the Account targeting pop-up page, choose the option This AWS account and choose Confirm .
-
-On the Create experiment template page, in the Description and name section:
-
-For Description, enter Terminate instances in an AZ to simulate AZ outage
-For Name - optional, enter TerminateInstancesinAZ
-In the Actions section:
-Choose Add action .
-For Name, enter TerminateInstances
-For Action type, select EC2 and aws:ec2:terminate-instances.
-Choose Save .
-In the Targets section, configure:
-Choose Edit .
-
-For Target method, select Resource tags, filters and parameters.
-
-For Resource tags:
-
-Choose Add new tag .
-For Key, enter Name
-For Value, enter wp-ha-app
-For Resource filters - optional:
-
-Choose Add new filter .
-
-For Attribute path, enter Placement.AvailabilityZone
-
-For Values, enter LabRegion appended with “a” at the end.
-
- Expected value: us-west-2a
-
-Choose Add new filter .
-
-For Attribute path, enter State.Name
-For Values, enter running.
-Choose Save .
-
-In the Service Access section, configure:
-Select Use an existing IAM role.
-For IAM role, select xxxx-FISRole-xxxx.
-Choose Create experiment template .
-The Create experiment template window is displayed.
-
-For To confirm that you want to create an experiment template without a stop condition, enter create in the field, enter create.
-
-Choose Create experiment template .
-
- Expected service output:
-
- You successfully created experiment template EXT9VzxxxxX / Terminate instances in an AZ to simulate AZ outage.
-
-
-#### TASK 8.3: START THE EXPERIMENT
+#### TASK 8.1: START THE EXPERIMENT
 In the left navigation pane, choose Experiment templates.
 
-Choose the Experiment template ID link.
+* Choose the Experiment template ID link.
+* Choose Start experiment and again Start experiment
 
-Choose Start experiment .
+The Start experiment window is displayed. For To confirm that you want to start the experiment, enter start in the field:, enter start.
 
-Choose Start experiment .
+* Choose Start experiment
 
-The Start experiment window is displayed.
+Return to the WordPress website browser tab and refresh  the page every few seconds. Return to the AWS Management Console and search for EC2.
 
-For To confirm that you want to start the experiment, enter start in the field:, enter start.
+* In the left navigation pane, choose Auto Scaling Groups.
+* Select WP-ASG.
+* Choose the Activity tab.
 
-Choose Start experiment .
-
- Expected service output:
-
- You successfully started experiment EXPU8kxxxxxE2.
-
-
- Note: Wait for the State to change to Completed.
-
-#### TASK 8.4: OBSERVE THE EXPERIMENT
-Return to the WordPress website browser tab and refresh  the page every few seconds.
- Expected output: The website should continue to load correctly.
-
-Return to the AWS Management Console and search for EC2.
-
-In the left navigation pane, choose Auto Scaling Groups.
-
-Select WP-ASG.
-
-Choose the Activity tab.
-
- Expected output: You should start to see that the EC2 instance in availability zone ending in “a” was taken out of service. It might take a few minutes for the health check to detect the EC2 is unhealthy, so keep refreshing the Instance list. You should also see new instances being launched by the auto scaling group to replenish the lost capacity.
-
- Congratulations! You have successfully conducted the experiment, the WordPress site remained functional. The website auto-healed from the AZ outage and website is back to the desired capacity in just a few minutes. This verifies highly-available architecture is working as intended.
+*Expected output: You should start to see that the EC2 instance in availability zone ending in “a” was taken out of service. It might take a few minutes for the health check to detect the EC2 is unhealthy, so keep refreshing the Instance list. You should also see new instances being launched by the auto scaling group to replenish the lost capacity.*
 
 ### Challenge yourself!
 #### SPEEDUP THE WORDPRESS WEBSITE

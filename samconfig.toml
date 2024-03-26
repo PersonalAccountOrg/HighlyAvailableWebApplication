@@ -1,9 +1,9 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "WPCloudFrontStack"
+stack_name = "WPLaunchConfigStack"
 resolve_s3 = true
-s3_prefix = "WPCloudFrontStack"
+s3_prefix = "WPLaunchConfigStack"
 region = "us-east-1"
 capabilities = "CAPABILITY_IAM"
-parameter_overrides = "CloudFrontAcmCertificate=\"\" WPDomainName=\"\" ALBDnsName=\"myWPAppALB-780364146.us-east-1.elb.amazonaws.com\""
+parameter_overrides = "LatestAL2AmiId=\"/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2\" DatabaseName=\"WPDatabase\" DatabaseHostName=\"mydbcluster.cluster-cjygmqwm8pux.us-east-1.rds.amazonaws.com\" DatabaseUsername=\"admin\" Username=\"wpadmin\" Email=\"carlos@yahoo.es\" EC2ServerInstanceType=\"t3.medium\" ALBDnsName=\"myWPAppALB-1833715373.us-east-1.elb.amazonaws.com\" WPElasticFileSystemID=\"fs-069e67df4182ec60c\""
 image_repositories = []
